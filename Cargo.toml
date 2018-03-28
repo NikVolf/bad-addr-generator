@@ -1,0 +1,15 @@
+[package]
+name = "generate-addr"
+version = "0.1.0"
+authors = ["NikVolf <nikvolf@gmail.com>"]
+
+[dependencies]
+parity-hash = "*"
+eth-secp256k1 = { git = "https://github.com/paritytech/rust-secp256k1" }
+rustc-hex = "*"
+rand = "*"
+tiny-keccak = "*"
+
+[[bin]]
+name = "generate"
+path = "src/main.rs"
