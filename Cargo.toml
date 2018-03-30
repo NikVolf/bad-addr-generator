@@ -9,6 +9,7 @@ eth-secp256k1 = { git = "https://github.com/paritytech/rust-secp256k1" }
 rustc-hex = "*"
 rand = "*"
 tiny-keccak = "*"
+num_cpus = "*"
 
 [[bin]]
 name = "generate"
