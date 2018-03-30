@@ -61,7 +61,7 @@ fn main_loop(counter: Arc<AtomicUsize>, tx: Sender<Message>) {
 			).expect("Failed to send");
 		}
 
-		let counter_val = counter.fetch_add(1, Ordering::SeqCst);
+		let counter_val = counter.fetch_add(1, Ordering::Relaxed);
 		if counter_val % 100000 == 0 {
 			tx.send(Message::Progress(counter_val)).expect("Failed to send");
 		}
