@@ -26,8 +26,7 @@ enum Message {
 	Progress(usize),
 }
 
-fn main_loop(counter: Arc<AtomicUsize>, tx: Sender<Message>) {
-	let start = hex::FromHex::from_hex(START_MASK).unwrap();
+fn main_loop(start: Vec<u8>, counter: Arc<AtomicUsize>, tx: Sender<Message>) {
 	let secp = secp256k1::Secp256k1::new();
 	let mut rng = rand::os::OsRng::new().expect("Failed to generate");
 	let mut address = [0u8; 20];
@@ -70,14 +69,19 @@ fn main_loop(counter: Arc<AtomicUsize>, tx: Sender<Message>) {
 
 fn main() {
 
+	let starting: Vec<u8> = hex::FromHex::from_hex(
+		::std::env::args().nth(1).as_ref().map(|x| x.as_ref()).unwrap_or(START_MASK)
+	).expect("Expected hex string as first param");
+
 	let counter = Arc::new(AtomicUsize::new(0));
 	let (sender, receiver) = mpsc::channel();
 
 	for _ in 0..num_cpus::get() {
 		let sender = sender.clone();
 		let counter = counter.clone();
+		let starting = starting.clone();
 		thread::spawn(move || {
-			main_loop(counter, sender);
+			main_loop(starting, counter, sender);
 		});
 	}
 
